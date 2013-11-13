@@ -1,0 +1,34 @@
+$Id: README,v 1.2 2005/11/25 14:40:40 gary Exp $
+
+GWFL FIFO-RRD README
+--------------------
+
+1. Purpose
+
+FIFO-RRD's function is simple, by no means a new concept. Read data
+from a FIFO and use that data to create and/or update RRDs.
+
+2. Requirements
+
+* Perl 5
+* Standard Libc headers
+* The following Perl modules:
+	POSIX, FindBin, File::Basename, File::Spec::Functions, RRDs
+
+3. Compiling and Installation
+
+a) make
+b) mv /path/to/installation/directory /usr/lib/fifo-rrd (or wherever)
+c) Init scripts are provided for Debian, Gentoo & RHEL3 (in sysscripts)
+d) Logrotate script is provided (in sysscripts)
+e) Configure rrd_templates.pm, template_config.pm, and fifo-rrd.pl
+f) Make sure FIFO-RRD can write to the RRD storage directory, log 
+   directory, and the pipe, as set in fifo-rrd.pl.
+
+Refer to http://gwfl.daimonic.org/?p=doc for an implementation example.
+
+4. Author
+
+Gary Wall <gary@daimonic.org>
+
+

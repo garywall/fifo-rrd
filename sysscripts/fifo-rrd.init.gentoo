@@ -1,0 +1,31 @@
+#!/sbin/runscript
+# $Id: fifo-rrd.init.gentoo,v 1.1 2005/09/26 19:32:53 gary Exp $
+# Copyright 1999-2005 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+# $Header: /var/lib/cvs/fifo-rrd-1/sysscripts/fifo-rrd.init.gentoo,v 1.1 2005/09/26 19:32:53 gary Exp $
+
+FIFO_RRD=/home/f/fifo-rrd/fifo-rrd.pl
+NAME=fifo-rrd.pl
+USER=nagios
+
+depend() {
+	before nagios
+}
+
+start() {
+	ebegin "Starting FIFO-RRD"
+	start-stop-daemon --quiet --start --chuid $USER --exec $FIFO_RRD
+	eend $?
+}
+
+stop() {
+	ebegin "Stopping FIFO-RRD"
+	start-stop-daemon --quiet --stop --name $NAME
+	eend $?
+}
+
+restart() {
+	svc_stop
+	sleep 1
+	svc_start
+}

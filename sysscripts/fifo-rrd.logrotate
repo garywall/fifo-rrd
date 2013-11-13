@@ -1,0 +1,6 @@
+/path/to/fifo-rrd.log {
+	compress
+	rotate 5
+	daily   
+	missingok
+}

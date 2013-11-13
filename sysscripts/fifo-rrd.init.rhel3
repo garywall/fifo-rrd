@@ -1,0 +1,66 @@
+#!/bin/bash
+#
+# $Id: fifo-rrd.init.rhel3,v 1.1 2005/09/26 19:32:53 gary Exp $
+#
+# Init file for fifo-rrd - RHEL3
+#
+# chkconfig: 345 97 01
+# description: Nagios performance data processor 
+#
+
+# source function library
+. /etc/rc.d/init.d/functions
+
+RETVAL=0
+prog="fifo-rrd"
+
+FIFO_RRD=/usr/lib/fifo-rrd/fifo-rrd.pl
+USER=nagios
+
+start() {
+	echo -n $"Starting $prog:"
+	su -l $USER -c $FIFO_RRD && success || failure
+	RETVAL=$?
+	[ "$RETVAL" = 0 ] && touch /var/lock/subsys/fifo-rrd
+	echo
+}
+
+stop() {
+	echo -n $"Stopping $prog:"
+	killproc $FIFO_RRD -TERM
+	RETVAL=$?
+	[ "$RETVAL" = 0 ] && rm -f /var/lock/subsys/fifo-rrd
+	echo
+}
+
+reload() {
+	echo -n $"Reloading $prog:"
+	killproc $FIFO_RRD -HUP
+	RETVAL=$?
+	echo
+}
+
+case "$1" in
+	start)
+		start
+		;;
+	stop)
+		stop
+		;;
+	reload)
+		reload
+		;;
+	status)
+		status $FIFO_RRD
+		RETVAL=$?
+		;;
+	restart)
+		stop
+		start
+		;;
+	*)
+		echo $"Usage: $0 {start|stop|restart|reload|status}"
+		RETVAL=1
+esac
+
+exit $RETVAL

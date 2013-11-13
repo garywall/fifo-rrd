@@ -1,0 +1,40 @@
+#!/bin/sh
+# $Id: fifo-rrd.init.debian,v 1.1 2005/09/26 19:32:53 gary Exp $
+# /etc/init.d/fifo-rrd: start and stop the FIFO-RRD daemon
+
+FIFO_RRD=/home/gary/fifo-rrd/fifo-rrd.pl
+NAME=fifo-rrd.pl
+USER=nagios
+
+test -x $FIFO_RRD || exit 0
+
+case "$1" in
+	start)
+		echo -n "Starting FIFO-RRD daemon: $NAME"
+		start-stop-daemon --start --chuid $USER --exec $FIFO_RRD
+		;;
+	stop)
+		echo -n "Stopping FIFO-RRD daemon: $NAME"
+		start-stop-daemon --stop --name $NAME
+		;;
+	reload)
+		echo -n "Reloading $NAME configuration"
+		start-stop-daemon --stop --signal HUP --name $NAME
+		;;
+	restart)
+		$0 stop
+		$0 start
+		;;
+	*)
+		echo "Usage: /etc/init.d/$NAME {start|stop|reload|restart}"
+		exit 1
+		;;
+esac
+
+if [ $? == 0 ]; then
+	echo .
+	exit 0
+else
+	echo failed
+	exit 1
+fi
